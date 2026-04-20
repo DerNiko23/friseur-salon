@@ -34,3 +34,15 @@ All code is inline in `index.html`, organized in clearly labelled comment blocks
 - Keine Google Analytics oder externe Tracking-Scripts
 - Keine externen Ressourcen die IP-Adressen übertragen ohne Einwilligung
 - Google Maps nur als iframe mit 2-Klick-Lösung einbinden
+
+## Design-Regeln (Pflicht)
+Bei JEDER Änderung am Frontend (HTML, CSS, neue Komponenten, 
+neue Seiten) immer zuerst den ui-ux-pro-max Skill laden:
+"use ui-ux-pro-max skill"
+Niemals visuellen Code schreiben ohne diesen Skill aktiv zu haben.
+
+## Token-Effizienz
+- Immer nur die minimal nötigen Dateien lesen
+- Keine kompletten Dateien neu schreiben wenn nur kleine 
+  Änderungen nötig sind — gezielt str_replace nutzen
+- Vor großen Änderungen kurz den Plan beschreiben
