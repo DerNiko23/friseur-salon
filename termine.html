@@ -482,6 +482,11 @@
             <textarea class="form-textarea" id="anmerkungen" name="anmerkungen" placeholder="Besondere Wünsche, Allergien …"></textarea>
           </div>
  
+          <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
+            <label for="website">Website leer lassen</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+          </div>
+
           <button type="submit" class="btn-submit">
             <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
             Terminanfrage absenden
@@ -657,6 +662,7 @@
  
     form.addEventListener('submit', e => {
       e.preventDefault();
+      if (document.getElementById('website').value) return;
       if (!validate()) {
         const first = form.querySelector('.invalid, .pills-error.show');
         if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
