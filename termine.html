@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Termin buchen bei Figaro by Terranova — Premium Friseursalon in Augsburg." />
+  <title>Termin buchen — Figaro by Terranova</title>
+ 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
+ 
+  <style>
+    /* ── Design Tokens (identisch zur Hauptseite) ── */
+    :root {
+      --black:       #0A0A0A;
+      --black-soft:  #111111;
+      --black-card:  #161616;
+      --gold:        #C9A84C;
+      --gold-light:  #E2C06A;
+      --gold-subtle: rgba(201, 168, 76, 0.12);
+      --white:       #F5F0E8;
+      --white-dim:   rgba(245, 240, 232, 0.6);
+      --white-faint: rgba(245, 240, 232, 0.08);
+      --error:       #e05252;
+      --success:     #52b788;
+ 
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+      --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
+      --radius-s: 4px;
+      --radius-m: 8px;
+      --radius-l: 14px;
+    }
+ 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { background: var(--black); color: var(--white); font-family: var(--font-body); line-height: 1.6; overflow-x: hidden; }
+    a    { color: inherit; text-decoration: none; }
+    ul   { list-style: none; }
+ 
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+ 
+    /* ── Navigation ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      height: 72px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(20px) saturate(1.3);
+      -webkit-backdrop-filter: blur(20px) saturate(1.3);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+    .nav-logo {
+      font-family: var(--font-heading); font-size: 1.3rem; font-weight: 600;
+      color: var(--gold); letter-spacing: 0.04em;
+    }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--white-dim);
+      transition: color 200ms ease;
+    }
+    .nav-back:hover { color: var(--gold); }
+    .nav-back:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 2px; }
+    .nav-back svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+ 
+    /* ── Page Header ── */
+    .page-header {
+      text-align: center;
+      padding: clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 5vw, 4rem) 0;
+      max-width: 620px; margin: 0 auto;
+    }
+    .section-label {
+      font-size: 0.62rem; font-weight: 600; letter-spacing: 0.32em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 0.9rem;
+    }
+    .page-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 500; line-height: 1.12; color: var(--white); margin-bottom: 1rem;
+    }
+    .page-title em { font-style: italic; color: var(--gold); }
+    .page-sub { font-size: 0.95rem; font-weight: 300; color: var(--white-dim); line-height: 1.8; }
+ 
+    /* ── Layout ── */
+    .booking-wrap {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: clamp(2.5rem, 5vw, 4.5rem);
+      max-width: 1100px; margin: 0 auto;
+      padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+      align-items: start;
+    }
+ 
+    /* ── Form Card ── */
+    .form-card {
+      background: var(--black-card);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius-l);
+      padding: clamp(2rem, 4vw, 3rem);
+    }
+    .form-card-title {
+      font-family: var(--font-heading); font-size: 1.4rem; font-weight: 500;
+      color: var(--white); margin-bottom: 1.75rem;
+      padding-bottom: 1.25rem; border-bottom: 1px solid var(--white-faint);
+    }
+ 
+    /* ── Form Elements ── */
+    .form-row    { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group  { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.1rem; }
+    .form-label  { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+    .form-label .opt { font-weight: 400; letter-spacing: 0.06em; text-transform: none; color: var(--white-dim); margin-left: 0.35rem; }
+ 
+    .form-input, .form-select, .form-textarea {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-s);
+      color: var(--white); font-family: var(--font-body);
+      font-size: 0.92rem; font-weight: 300;
+      padding: 0.8rem 1rem; width: 100%;
+      transition: border-color 200ms ease, background 200ms ease;
+      outline: none; appearance: none; -webkit-appearance: none;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--gold); background: rgba(201,168,76,0.05);
+    }
+    .form-input::placeholder, .form-textarea::placeholder { color: rgba(245,240,232,0.25); }
+    .form-input::-webkit-calendar-picker-indicator {
+      filter: invert(0.8) sepia(0.5) saturate(2) hue-rotate(5deg); cursor: pointer;
+    }
+    .form-select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23C9A84C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem;
+    }
+    .form-select option { background: var(--black-card); color: var(--white); }
+    .form-textarea { resize: vertical; min-height: 100px; }
+ 
+    .form-error { font-size: 0.72rem; color: var(--error); display: none; }
+    .form-group.invalid .form-input,
+    .form-group.invalid .form-select,
+    .form-group.invalid .form-textarea { border-color: var(--error); }
+    .form-group.invalid .form-error { display: block; }
+ 
+    /* ── Leistungs-Pills ── */
+    .pills { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; margin-bottom: 0.5rem; }
+    .pill input[type="radio"] { display: none; }
+    .pill label {
+      display: flex; flex-direction: column;
+      padding: 0.95rem 1.1rem;
+      border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-m);
+      cursor: pointer; transition: border-color 200ms ease, background 200ms ease;
+    }
+    .pill label:hover           { border-color: rgba(201,168,76,0.45); }
+    .pill input:checked + label { border-color: var(--gold); background: var(--gold-subtle); }
+    .pill-name  { font-size: 0.88rem; font-weight: 500; color: var(--white); margin-bottom: 0.15rem; }
+    .pill-price { font-size: 0.7rem; color: var(--gold); }
+    .pills-error { font-size: 0.72rem; color: var(--error); display: none; margin-bottom: 0.75rem; }
+    .pills-error.show { display: block; }
+ 
+    /* ── Submit ── */
+    .btn-submit {
+      display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+      width: 100%; padding: 1.05rem 2rem; margin-top: 1.5rem;
+      background: var(--gold); color: var(--black);
+      font-family: var(--font-body); font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      border: none; border-radius: var(--radius-s); cursor: pointer;
+      transition: background 250ms ease, transform 250ms var(--ease-out), box-shadow 250ms ease;
+    }
+    .btn-submit:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 10px 36px rgba(201,168,76,0.35); }
+    .btn-submit:active { transform: translateY(0); }
+    .btn-submit:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    .btn-submit svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+ 
+    /* ── Success ── */
+    .success { display: none; flex-direction: column; align-items: center; text-align: center; padding: 3rem 2rem; gap: 1.25rem; }
+    .success.show { display: flex; }
+    .success-icon {
+      width: 68px; height: 68px; border-radius: 50%;
+      background: rgba(82,183,136,0.12);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .success-icon svg { width: 30px; height: 30px; stroke: var(--success); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .success-title { font-family: var(--font-heading); font-size: 1.6rem; font-weight: 500; color: var(--white); }
+    .success-sub   { font-size: 0.9rem; font-weight: 300; color: var(--white-dim); line-height: 1.75; max-width: 340px; }
+    .success-back  {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--gold); border: 1px solid var(--gold); padding: 0.75rem 1.75rem;
+      border-radius: var(--radius-s); transition: background 200ms ease, color 200ms ease;
+    }
+    .success-back:hover { background: var(--gold); color: var(--black); }
+ 
+    /* ── Info Sidebar ── */
+    .info-sidebar { position: sticky; top: calc(72px + 2rem); display: flex; flex-direction: column; gap: 1.25rem; }
+ 
+    .info-card {
+      background: var(--black-card);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius-l); padding: 1.75rem;
+    }
+    .info-card-title {
+      font-size: 0.62rem; font-weight: 600; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem;
+    }
+    .info-row { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.25rem; }
+    .info-row:last-child { margin-bottom: 0; }
+    .info-icon {
+      width: 36px; height: 36px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--gold-subtle); border-radius: var(--radius-s);
+    }
+    .info-icon svg { width: 16px; height: 16px; color: var(--gold); stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .info-label { font-size: 0.66rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.2rem; }
+    .info-value { font-size: 0.85rem; font-weight: 300; color: var(--white-dim); line-height: 1.65; }
+    .info-value a:hover { color: var(--gold); }
+ 
+    .hours-table { width: 100%; border-collapse: collapse; }
+    .hours-table tr { border-bottom: 1px solid var(--white-faint); }
+    .hours-table tr:last-child { border-bottom: none; }
+    .hours-table td { padding: 0.5rem 0; font-size: 0.82rem; font-weight: 300; color: var(--white-dim); }
+    .hours-table td:last-child { text-align: right; color: var(--white); }
+    .hours-table .closed td { color: rgba(245,240,232,0.25); }
+    .hours-table .closed td:last-child { color: rgba(245,240,232,0.25); }
+ 
+    /* ── Footer ── */
+    .footer { padding: 2rem clamp(1.5rem, 5vw, 4rem); border-top: 1px solid var(--white-faint); margin-top: clamp(2rem, 5vw, 4rem); }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-logo { font-family: var(--font-heading); font-size: 1.15rem; font-weight: 600; color: var(--gold); letter-spacing: 0.04em; }
+    .footer-copy { font-size: 0.7rem; color: rgba(245,240,232,0.3); }
+    .footer-legal { display: flex; gap: 1.25rem; }
+    .footer-legal a { font-size: 0.7rem; color: rgba(245,240,232,0.3); transition: color 200ms ease; }
+    .footer-legal a:hover { color: var(--gold); }
+ 
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .booking-wrap { grid-template-columns: 1fr; }
+      .info-sidebar { position: static; }
+    }
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+      .footer-inner { justify-content: center; text-align: center; }
+    }
+    @media (max-width: 420px) {
+      .pills { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+ 
+  <nav class="nav">
+    <a class="nav-logo" href="index.html" aria-label="Figaro by Terranova — Startseite">Figaro by Terranova</a>
+    <a class="nav-back" href="index.html" aria-label="Zurück zur Startseite">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      Zurück
+    </a>
+  </nav>
+ 
+  <main>
+ 
+    <header class="page-header">
+      <p class="section-label">Figaro by Terranova · Augsburg</p>
+      <h1 class="page-title">Ihren <em>Termin</em> buchen</h1>
+      <p class="page-sub">Wählen Sie Leistung, Datum und Zeit — wir melden uns innerhalb eines Werktages zur Bestätigung.</p>
+    </header>
+ 
+    <div class="booking-wrap">
+ 
+      <!-- Formular -->
+      <div class="form-card">
+ 
+        <form id="bookingForm" novalidate aria-label="Terminbuchungsformular">
+          <h2 class="form-card-title">Terminanfrage</h2>
+ 
+          <!-- Leistung -->
+          <fieldset style="border:none;padding:0;margin-bottom:1.1rem;">
+            <legend class="form-label" style="margin-bottom:0.75rem;">Leistung</legend>
+            <div class="pills">
+              <div class="pill">
+                <input type="radio" name="leistung" id="s1" value="Haarschnitt" />
+                <label for="s1"><span class="pill-name">Haarschnitt</span><span class="pill-price">Ab 55 €</span></label>
+              </div>
+              <div class="pill">
+                <input type="radio" name="leistung" id="s2" value="Colorierung" />
+                <label for="s2"><span class="pill-name">Colorierung</span><span class="pill-price">Ab 80 €</span></label>
+              </div>
+              <div class="pill">
+                <input type="radio" name="leistung" id="s3" value="Styling" />
+                <label for="s3"><span class="pill-name">Styling</span><span class="pill-price">Ab 45 €</span></label>
+              </div>
+              <div class="pill">
+                <input type="radio" name="leistung" id="s4" value="Haarpflege" />
+                <label for="s4"><span class="pill-name">Haarpflege</span><span class="pill-price">Ab 35 €</span></label>
+              </div>
+            </div>
+            <p class="pills-error" id="leistungError" role="alert">Bitte wählen Sie eine Leistung aus.</p>
+          </fieldset>
+ 
+          <!-- Datum & Zeit -->
+          <div class="form-row">
+            <div class="form-group" id="grp-datum">
+              <label class="form-label" for="datum">Datum</label>
+              <input class="form-input" type="date" id="datum" name="datum" aria-describedby="datumErr" />
+              <span class="form-error" id="datumErr" role="alert">Bitte wählen Sie einen gültigen Tag (Di – Fr).</span>
+            </div>
+            <div class="form-group" id="grp-zeit">
+              <label class="form-label" for="zeit">Uhrzeit</label>
+              <select class="form-select" id="zeit" name="zeit" aria-describedby="zeitErr">
+                <option value="" disabled selected>Uhrzeit wählen</option>
+                <option>09:00 Uhr</option><option>09:30 Uhr</option>
+                <option>10:00 Uhr</option><option>10:30 Uhr</option>
+                <option>11:00 Uhr</option><option>11:30 Uhr</option>
+                <option>12:00 Uhr</option><option>12:30 Uhr</option>
+                <option>13:00 Uhr</option><option>13:30 Uhr</option>
+                <option>14:00 Uhr</option><option>14:30 Uhr</option>
+                <option>15:00 Uhr</option><option>15:30 Uhr</option>
+                <option>16:00 Uhr</option><option>16:30 Uhr</option>
+                <option>17:00 Uhr</option><option>17:30 Uhr</option>
+                <option>18:00 Uhr</option>
+              </select>
+              <span class="form-error" id="zeitErr" role="alert">Bitte wählen Sie eine Uhrzeit.</span>
+            </div>
+          </div>
+ 
+          <!-- Name -->
+          <div class="form-row">
+            <div class="form-group" id="grp-vorname">
+              <label class="form-label" for="vorname">Vorname</label>
+              <input class="form-input" type="text" id="vorname" name="vorname" placeholder="Maria" autocomplete="given-name" aria-describedby="vornameErr" />
+              <span class="form-error" id="vornameErr" role="alert">Bitte geben Sie Ihren Vornamen ein.</span>
+            </div>
+            <div class="form-group" id="grp-nachname">
+              <label class="form-label" for="nachname">Nachname</label>
+              <input class="form-input" type="text" id="nachname" name="nachname" placeholder="Müller" autocomplete="family-name" aria-describedby="nachnameErr" />
+              <span class="form-error" id="nachnameErr" role="alert">Bitte geben Sie Ihren Nachnamen ein.</span>
+            </div>
+          </div>
+ 
+          <!-- E-Mail -->
+          <div class="form-group" id="grp-email">
+            <label class="form-label" for="email">E-Mail</label>
+            <input class="form-input" type="email" id="email" name="email" placeholder="maria@beispiel.de" autocomplete="email" aria-describedby="emailErr" />
+            <span class="form-error" id="emailErr" role="alert">Bitte geben Sie eine gültige E-Mail-Adresse ein.</span>
+          </div>
+ 
+          <!-- Telefon -->
+          <div class="form-group">
+            <label class="form-label" for="telefon">Telefon <span class="opt">(optional)</span></label>
+            <input class="form-input" type="tel" id="telefon" name="telefon" placeholder="0821 4348669" autocomplete="tel" />
+          </div>
+ 
+          <!-- Anmerkungen -->
+          <div class="form-group">
+            <label class="form-label" for="anmerkungen">Anmerkungen <span class="opt">(optional)</span></label>
+            <textarea class="form-textarea" id="anmerkungen" name="anmerkungen" placeholder="Besondere Wünsche, Allergien …"></textarea>
+          </div>
+ 
+          <button type="submit" class="btn-submit">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Terminanfrage absenden
+          </button>
+        </form>
+ 
+        <!-- Erfolgsmeldung -->
+        <div class="success" id="successState" aria-live="polite">
+          <div class="success-icon">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h2 class="success-title">Anfrage eingegangen!</h2>
+          <p class="success-sub">Vielen Dank! Wir melden uns innerhalb eines Werktages zur Bestätigung per E-Mail oder Telefon.</p>
+          <a class="success-back" href="index.html">← Zurück zur Startseite</a>
+        </div>
+ 
+      </div>
+ 
+      <!-- Sidebar -->
+      <aside class="info-sidebar" aria-label="Kontakt & Öffnungszeiten">
+ 
+        <div class="info-card">
+          <p class="info-card-title">Kontakt</p>
+          <div class="info-row">
+            <div class="info-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <p class="info-label">Adresse</p>
+              <address class="info-value" style="font-style:normal;">Stadtberger Str. 99<br />86157 Augsburg</address>
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.12a2 2 0 0 1 1.95-2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.29 6.29l.61-.4a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div>
+              <p class="info-label">Telefon</p>
+              <p class="info-value"><a href="tel:+498214348669">0821 4348669</a></p>
+            </div>
+          </div>
+        </div>
+ 
+        <div class="info-card">
+          <p class="info-card-title">Öffnungszeiten</p>
+          <table class="hours-table" aria-label="Öffnungszeiten">
+            <tbody>
+              <tr class="closed"><td>Montag</td><td>Geschlossen</td></tr>
+              <tr><td>Dienstag</td><td>09:00 – 19:00</td></tr>
+              <tr><td>Mittwoch</td><td>09:00 – 20:00</td></tr>
+              <tr><td>Donnerstag</td><td>09:00 – 20:00</td></tr>
+              <tr><td>Freitag</td><td>09:00 – 18:00</td></tr>
+              <tr class="closed"><td>Samstag</td><td>Geschlossen</td></tr>
+              <tr class="closed"><td>Sonntag</td><td>Geschlossen</td></tr>
+            </tbody>
+          </table>
+        </div>
+ 
+        <div class="info-card" style="border-color:rgba(201,168,76,0.2);background:rgba(201,168,76,0.04);">
+          <p class="info-card-title">Hinweis</p>
+          <p style="font-size:0.82rem;font-weight:300;color:var(--white-dim);line-height:1.7;">
+            Dies ist eine <strong style="color:var(--white);font-weight:500;">Anfrage</strong>, keine verbindliche Buchung. Wir bestätigen Ihren Termin persönlich.
+          </p>
+        </div>
+ 
+      </aside>
+ 
+    </div>
+ 
+  </main>
+ 
+  <footer class="footer">
+    <div class="footer-inner">
+      <a class="footer-logo" href="index.html">Figaro by Terranova</a>
+      <p class="footer-copy">&copy; <span id="year"></span> Figaro by Terranova. Alle Rechte vorbehalten.</p>
+      <div class="footer-legal">
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+      </div>
+    </div>
+  </footer>
+ 
+  <script>
+    'use strict';
+ 
+    document.getElementById('year').textContent = new Date().getFullYear();
+ 
+    const form         = document.getElementById('bookingForm');
+    const successState = document.getElementById('successState');
+    const datumInput   = document.getElementById('datum');
+ 
+    /* Mindestdatum = heute */
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    datumInput.min = today.toISOString().split('T')[0];
+ 
+    function setInvalid(id, invalid) {
+      document.getElementById(id).classList.toggle('invalid', invalid);
+    }
+ 
+    function validate() {
+      let ok = true;
+ 
+      /* Leistung */
+      const leistungOk = !!form.querySelector('input[name="leistung"]:checked');
+      document.getElementById('leistungError').classList.toggle('show', !leistungOk);
+      if (!leistungOk) ok = false;
+ 
+      /* Datum: nur Di–Fr, nicht in der Vergangenheit */
+      let datumOk = false;
+      if (datumInput.value) {
+        const d   = new Date(datumInput.value + 'T00:00:00');
+        const day = d.getDay();
+        datumOk = day >= 2 && day <= 5 && d >= today;
+      }
+      setInvalid('grp-datum', !datumOk);
+      if (!datumOk) ok = false;
+ 
+      /* Uhrzeit */
+      const zeitOk = !!document.getElementById('zeit').value;
+      setInvalid('grp-zeit', !zeitOk);
+      if (!zeitOk) ok = false;
+ 
+      /* Vorname */
+      const vornameOk = !!document.getElementById('vorname').value.trim();
+      setInvalid('grp-vorname', !vornameOk);
+      if (!vornameOk) ok = false;
+ 
+      /* Nachname */
+      const nachnameOk = !!document.getElementById('nachname').value.trim();
+      setInvalid('grp-nachname', !nachnameOk);
+      if (!nachnameOk) ok = false;
+ 
+      /* E-Mail */
+      const emailVal = document.getElementById('email').value.trim();
+      const emailOk  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal);
+      setInvalid('grp-email', !emailOk);
+      if (!emailOk) ok = false;
+ 
+      return ok;
+    }
+ 
+    /* Fehler live wegräumen beim Tippen */
+    form.querySelectorAll('.form-input, .form-select').forEach(el => {
+      el.addEventListener('input', () => el.closest('.form-group')?.classList.remove('invalid'));
+    });
+    form.querySelectorAll('input[name="leistung"]').forEach(el => {
+      el.addEventListener('change', () => document.getElementById('leistungError').classList.remove('show'));
+    });
+ 
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      if (!validate()) {
+        const first = form.querySelector('.invalid, .pills-error.show');
+        if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      form.style.display = 'none';
+      successState.classList.add('show');
+      successState.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  </script>
+ 
+</body>
+</html>
