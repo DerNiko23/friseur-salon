@@ -28,3 +28,9 @@ All code is inline in `index.html`, organized in clearly labelled comment blocks
 - Formatting: German locale (`de-DE`) for any dates, times, or prices.
 - Images: use `alt` text in German; prefer optimized formats (WebP with JPEG fallback).
 - Accessibility: semantic HTML elements (`<nav>`, `<section>`, `<article>`, `<footer>`), ARIA labels where needed.
+
+## DSGVO-Regeln (Pflicht)
+- Keine Google Fonts via CDN — immer lokal hosten
+- Keine Google Analytics oder externe Tracking-Scripts
+- Keine externen Ressourcen die IP-Adressen übertragen ohne Einwilligung
+- Google Maps nur als iframe mit 2-Klick-Lösung einbinden

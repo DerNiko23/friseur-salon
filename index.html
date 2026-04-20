@@ -6,12 +6,83 @@
   <meta name="description" content="Figaro by Terranova – Premium Friseursalon in Augsburg. Haarschnitt, Colorierung, Styling und Haarpflege auf höchstem Niveau." />
   <title>Figaro by Terranova — Wo Stil zur Kunst wird</title>
 
-  <!-- Google Fonts: Playfair Display + Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
+  <!-- Fonts lokal eingebunden für DSGVO-Konformität -->
 
   <style>
+    /* ═══════════════════════════════════════════════════
+       FONTS
+    ═══════════════════════════════════════════════════ */
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 300;
+      font-display: swap;
+      src: url('fonts/inter-normal-300.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('fonts/inter-normal-400.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url('fonts/inter-normal-500.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 600;
+      font-display: swap;
+      src: url('fonts/inter-normal-600.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'Playfair Display';
+      font-style: italic;
+      font-weight: 400;
+      font-display: swap;
+      src: url('fonts/playfair-display-italic-400.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'Playfair Display';
+      font-style: italic;
+      font-weight: 500;
+      font-display: swap;
+      src: url('fonts/playfair-display-italic-500.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'Playfair Display';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('fonts/playfair-display-normal-400.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'Playfair Display';
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url('fonts/playfair-display-normal-500.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'Playfair Display';
+      font-style: normal;
+      font-weight: 600;
+      font-display: swap;
+      src: url('fonts/playfair-display-normal-600.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'Playfair Display';
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: url('fonts/playfair-display-normal-700.woff2') format('woff2');
+    }
+
     /* ═══════════════════════════════════════════════════
        DESIGN TOKENS
     ═══════════════════════════════════════════════════ */
@@ -646,7 +717,7 @@
       margin-top: 0.25rem;
     }
 
-    .about-text {}
+
 
     .about-quote {
       font-family: var(--font-heading);
@@ -673,7 +744,7 @@
       margin-top: 2.5rem;
       border-top: 1px solid var(--white-faint);
     }
-    .about-stat {}
+
     .about-stat-num {
       font-family: var(--font-heading);
       font-size: 2.4rem;
@@ -775,7 +846,7 @@
     /* ═══════════════════════════════════════════════════
        TESTIMONIALS
     ═══════════════════════════════════════════════════ */
-    .testimonials {}
+
 
     .testimonials-header {
       text-align: center;
@@ -893,7 +964,7 @@
       margin: 0 auto;
     }
 
-    .contact-info {}
+
 
     .contact-detail {
       display: flex;
@@ -1183,7 +1254,7 @@
       -->
       <img
         class="hero-img"
-        src="studio.jpg"
+        src="Bilder/studio.jpg"
         alt="Eleganter Salon-Innenraum von Figaro by Terranova"
         width="1920"
         height="1080"
@@ -1315,7 +1386,7 @@
           -->
           <img
             class="about-img"
-            src="friseur.jpg"
+            src="Bilder/friseur.jpg"
             alt="Erfahrener Stylist bei der Arbeit im Figaro by Terranova"
             width="800"
             height="1000"
@@ -1397,7 +1468,7 @@
 
       <div class="gallery-item reveal" role="listitem" tabindex="0" aria-label="Galeriebild 1 — Frisur-Detail">
         <img
-          src="haare1.jpg"
+          src="Bilder/haare1.jpg"
           alt="Elegante Hochsteckfrisur — Figaro by Terranova"
           width="600" height="900"
           loading="lazy"
@@ -1410,7 +1481,7 @@
 
       <div class="gallery-item reveal" role="listitem" tabindex="0" aria-label="Galeriebild 2 — Colorierung">
         <img
-          src="haare2.jpg"
+          src="Bilder/haare2.jpg"
           alt="Professionelle Colorierung — Figaro by Terranova"
           width="600" height="400"
           loading="lazy"
@@ -1423,7 +1494,7 @@
 
       <div class="gallery-item reveal" role="listitem" tabindex="0" aria-label="Galeriebild 3 — Salon-Atmosphäre">
         <img
-          src="haare3.jpg"
+          src="Bilder/haare3.jpg"
           alt="Salon-Atmosphäre — Figaro by Terranova"
           width="600" height="400"
           loading="lazy"
@@ -1436,7 +1507,7 @@
 
       <div class="gallery-item reveal" role="listitem" tabindex="0" aria-label="Galeriebild 4 — Haarschnitt" style="grid-column: span 2;">
         <img
-          src="haare4.jpg"
+          src="Bilder/haare4.jpg"
           alt="Präziser Haarschnitt — Figaro by Terranova"
           width="600" height="400"
           loading="lazy"
@@ -1621,10 +1692,8 @@
                       href="https://booksy.com/..."
           -->
           <a
-            href="#"
+            href="termine.html"
             class="btn btn-primary btn-lg"
-            target="_blank"
-            rel="noopener noreferrer"
             aria-label="Jetzt Termin online buchen"
           >
             Jetzt Termin buchen
@@ -1694,7 +1763,7 @@
       </ul>
 
       <p class="footer-copy">
-        &copy; <span id="year"></span> Figaro by Terranova. Alle Rechte vorbehalten.
+        &copy; <span id="year"></span> Figaro by Terranova. Alle Rechte vorbehalten. | <a href="datenschutz.html">Datenschutz</a> | <a href="impressum.html">Impressum</a>
       </p>
 
     </div>
