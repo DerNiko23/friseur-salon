@@ -121,6 +121,7 @@
       scroll-behavior: smooth;
       font-size: 16px;
       -webkit-text-size-adjust: 100%;
+      overflow-x: hidden;
     }
 
     body {
@@ -503,14 +504,14 @@
 
     .reveal-left {
       opacity: 0;
-      transform: translateX(-54px);
+      transform: translateX(-40px);
       transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
     }
     .reveal-left.visible  { opacity: 1; transform: none; }
 
     .reveal-right {
       opacity: 0;
-      transform: translateX(54px);
+      transform: translateX(40px);
       transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
     }
     .reveal-right.visible { opacity: 1; transform: none; }
@@ -681,7 +682,7 @@
       content: '';
       position: absolute;
       bottom: -1.75rem;
-      right: -1.75rem;
+      right: 0;
       width: 40%;
       height: 40%;
       border-bottom: 1px solid var(--gold);
@@ -694,7 +695,7 @@
     .about-badge {
       position: absolute;
       bottom: 2rem;
-      right: -1.5rem;
+      right: 0;
       background: var(--gold);
       color: var(--black);
       padding: 1.2rem 1.5rem;
