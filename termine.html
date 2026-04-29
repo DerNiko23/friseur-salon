@@ -217,21 +217,96 @@
     .form-group.invalid .form-textarea { border-color: var(--error); }
     .form-group.invalid .form-error { display: block; }
  
-    /* ── Leistungs-Pills ── */
-    .pills { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; margin-bottom: 0.5rem; }
-    .pill input[type="radio"] { display: none; }
-    .pill label {
-      display: flex; flex-direction: column;
-      padding: 0.95rem 1.1rem;
-      border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-m);
-      cursor: pointer; transition: border-color 200ms ease, background 200ms ease;
+    /* ── Leistungs-Auswahl ── */
+    .service-select { position: relative; margin-bottom: 0.5rem; }
+    .service-trigger {
+      width: 100%; min-height: 52px;
+      display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-s);
+      color: var(--white);
+      font-family: var(--font-body);
+      padding: 0.65rem 0.85rem 0.65rem 1rem;
+      cursor: pointer;
+      transition: border-color 200ms ease, background 200ms ease;
+      text-align: left;
     }
-    .pill label:hover           { border-color: rgba(201,168,76,0.45); }
-    .pill input:checked + label { border-color: var(--gold); background: var(--gold-subtle); }
-    .pill-name  { font-size: 0.88rem; font-weight: 500; color: var(--white); margin-bottom: 0.15rem; }
-    .pill-price { font-size: 0.7rem; color: var(--gold); }
-    .pills-error { font-size: 0.72rem; color: var(--error); display: none; margin-bottom: 0.75rem; }
-    .pills-error.show { display: block; }
+    .service-select.open .service-trigger,
+    .service-trigger:focus-visible {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.05);
+      outline: none;
+    }
+    .service-placeholder { color: rgba(245,240,232,0.42); font-size: 0.92rem; font-weight: 300; }
+    .service-summary {
+      display: flex; flex-wrap: wrap; gap: 0.4rem;
+      min-width: 0;
+    }
+    .service-chip {
+      max-width: 100%;
+      padding: 0.35rem 0.55rem;
+      border: 1px solid rgba(201,168,76,0.35);
+      border-radius: var(--radius-s);
+      background: rgba(201,168,76,0.1);
+      color: var(--white);
+      font-size: 0.76rem;
+      line-height: 1.3;
+    }
+    .service-chevron {
+      width: 18px; height: 18px; flex: 0 0 auto;
+      color: var(--gold);
+      transition: transform 200ms ease;
+    }
+    .service-select.open .service-chevron { transform: rotate(180deg); }
+    .service-menu {
+      position: absolute; z-index: 20;
+      top: calc(100% + 0.45rem); left: 0; right: 0;
+      display: none;
+      background: #171717;
+      border: 1px solid rgba(201,168,76,0.28);
+      border-radius: var(--radius-m);
+      box-shadow: 0 18px 48px rgba(0,0,0,0.45);
+      overflow: hidden;
+    }
+    .service-select.open .service-menu { display: block; }
+    .service-search-wrap { padding: 0.75rem; border-bottom: 1px solid var(--white-faint); }
+    .service-search {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-s);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      padding: 0.7rem 0.85rem;
+      outline: none;
+    }
+    .service-search:focus { border-color: var(--gold); }
+    .service-search::placeholder { color: rgba(245,240,232,0.32); }
+    .service-options { max-height: 310px; overflow: auto; padding: 0.35rem 0; }
+    .service-group {
+      padding: 0.65rem 1rem 0.35rem;
+      font-size: 0.62rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--gold);
+    }
+    .service-option {
+      display: flex; align-items: flex-start; gap: 0.7rem;
+      padding: 0.62rem 1rem;
+      cursor: pointer;
+      color: var(--white-dim);
+      transition: background 160ms ease, color 160ms ease;
+    }
+    .service-option:hover { background: rgba(201,168,76,0.08); color: var(--white); }
+    .service-option input {
+      width: 16px; height: 16px; margin-top: 0.1rem; flex: 0 0 auto;
+      accent-color: var(--gold);
+    }
+    .service-option span { font-size: 0.86rem; line-height: 1.45; }
+    .service-empty { display: none; padding: 0.9rem 1rem; color: var(--white-dim); font-size: 0.82rem; }
+    .service-empty.show { display: block; }
+    .service-error { font-size: 0.72rem; color: var(--error); display: none; margin-bottom: 0.75rem; }
+    .service-error.show { display: block; }
  
     /* ── Submit ── */
     .btn-submit {
@@ -369,7 +444,7 @@
       .form-row { grid-template-columns: 1fr; }
     }
     @media (max-width: 420px) {
-      .pills { grid-template-columns: 1fr; }
+      .service-menu { position: static; margin-top: 0.45rem; }
     }
   </style>
 </head>
@@ -402,25 +477,71 @@
           <!-- Leistung -->
           <fieldset style="border:none;padding:0;margin-bottom:1.1rem;">
             <legend class="form-label" style="margin-bottom:0.75rem;">Leistung</legend>
-            <div class="pills">
-              <div class="pill">
-                <input type="radio" name="leistung" id="s1" value="Haarschnitt" />
-                <label for="s1"><span class="pill-name">Haarschnitt</span><span class="pill-price">Ab 55 €</span></label>
-              </div>
-              <div class="pill">
-                <input type="radio" name="leistung" id="s2" value="Colorierung" />
-                <label for="s2"><span class="pill-name">Colorierung</span><span class="pill-price">Ab 80 €</span></label>
-              </div>
-              <div class="pill">
-                <input type="radio" name="leistung" id="s3" value="Styling" />
-                <label for="s3"><span class="pill-name">Styling</span><span class="pill-price">Ab 45 €</span></label>
-              </div>
-              <div class="pill">
-                <input type="radio" name="leistung" id="s4" value="Haarpflege" />
-                <label for="s4"><span class="pill-name">Haarpflege</span><span class="pill-price">Ab 35 €</span></label>
+            <div class="service-select" id="serviceSelect">
+              <button class="service-trigger" type="button" id="serviceTrigger" aria-haspopup="listbox" aria-expanded="false" aria-controls="serviceMenu">
+                <span class="service-summary" id="serviceSummary">
+                  <span class="service-placeholder">Leistungen suchen und auswählen</span>
+                </span>
+                <svg class="service-chevron" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="service-menu" id="serviceMenu">
+                <div class="service-search-wrap">
+                  <input class="service-search" type="search" id="serviceSearch" placeholder="Nach Leistung suchen" autocomplete="off" aria-label="Leistungen suchen" />
+                </div>
+                <div class="service-options" id="serviceOptions" role="listbox" aria-multiselectable="true">
+                  <div class="service-group">Damen</div>
+                  <label class="service-option"><input type="checkbox" value="Waschen, Pflege und Styling" /> <span>Waschen, Pflege und Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Waschen, Pflege, Schnitt und Styling" /> <span>Waschen, Pflege, Schnitt und Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Plex Pflege" /> <span>Plex Pflege</span></label>
+                  <label class="service-option"><input type="checkbox" value="2-Phasenpflege mit Head Spa" /> <span>2-Phasenpflege mit Head Spa</span></label>
+                  <label class="service-option"><input type="checkbox" value="Smooth Filler (Anti-Frizz)" /> <span>Smooth Filler (Anti-Frizz)</span></label>
+                  <label class="service-option"><input type="checkbox" value="Ansatzfarbe &amp; Styling" /> <span>Ansatzfarbe &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Ansatzfarbe, Schnitt &amp; Styling" /> <span>Ansatzfarbe, Schnitt &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Farbe ganzer Kopf &amp; Styling" /> <span>Farbe ganzer Kopf &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Farbe ganzer Kopf, Schnitt &amp; Styling" /> <span>Farbe ganzer Kopf, Schnitt &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Klassische Strähnen am Oberkopf &amp; Styling" /> <span>Klassische Strähnen am Oberkopf &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Klassische Strähnen am Oberkopf, Schnitt &amp; Styling" /> <span>Klassische Strähnen am Oberkopf, Schnitt &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Klassische Strähnen am ganzen Kopf &amp; Styling" /> <span>Klassische Strähnen am ganzen Kopf &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Klassische Strähnen am ganzen Kopf, Schnitt &amp; Styling" /> <span>Klassische Strähnen am ganzen Kopf, Schnitt &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Babylights am Oberkopf &amp; Styling" /> <span>Babylights am Oberkopf &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Babylights am Oberkopf, Schnitt &amp; Styling" /> <span>Babylights am Oberkopf, Schnitt &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Babylights am ganzen Kopf &amp; Styling" /> <span>Babylights am ganzen Kopf &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Babylights am ganzen Kopf, Schnitt &amp; Styling" /> <span>Babylights am ganzen Kopf, Schnitt &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Balayage, Gloss &amp; Styling" /> <span>Balayage, Gloss &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Balayage, Gloss, Schnitt &amp; Styling" /> <span>Balayage, Gloss, Schnitt &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Air Touch Technik &amp; Styling" /> <span>Air Touch Technik &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Air Touch Technik, Schnitt &amp; Styling" /> <span>Air Touch Technik, Schnitt &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Refresh Balayage / Air Touch &amp; Styling" /> <span>Refresh Balayage / Air Touch &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Refresh Balayage / Air Touch, Schnitt &amp; Styling" /> <span>Refresh Balayage / Air Touch, Schnitt &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Faceframing &amp; Styling" /> <span>Faceframing &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Faceframing, Schnitt &amp; Styling" /> <span>Faceframing, Schnitt &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Dauerwelle am Oberkopf &amp; Styling" /> <span>Dauerwelle am Oberkopf &amp; Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Dauerwelle am Oberkopf mit Schnitt &amp; Styling" /> <span>Dauerwelle am Oberkopf mit Schnitt &amp; Styling</span></label>
+                  <div class="service-group">Herren</div>
+                  <label class="service-option"><input type="checkbox" value="Waschen, Schnitt und Styling" /> <span>Waschen, Schnitt und Styling</span></label>
+                  <label class="service-option"><input type="checkbox" value="Konturenschnitt" /> <span>Konturenschnitt</span></label>
+                  <label class="service-option"><input type="checkbox" value="Verwöhnprogramm (Waschen, Schnitt, Kopfmassage &amp; Styling)" /> <span>Verwöhnprogramm (Waschen, Schnitt, Kopfmassage &amp; Styling)</span></label>
+                  <label class="service-option"><input type="checkbox" value="Dauerwelle am Oberkopf &amp; Herrenschnitt" /> <span>Dauerwelle am Oberkopf &amp; Herrenschnitt</span></label>
+                  <div class="service-group">Kinder</div>
+                  <label class="service-option"><input type="checkbox" value="Schnitt bis 10 Jahre" /> <span>Schnitt bis 10 Jahre</span></label>
+                  <label class="service-option"><input type="checkbox" value="Waschen, Schnitt &amp; Styling bis 10 Jahre" /> <span>Waschen, Schnitt &amp; Styling bis 10 Jahre</span></label>
+                  <label class="service-option"><input type="checkbox" value="Waschen, Schnitt &amp; Styling Jungs bis 14 Jahre" /> <span>Waschen, Schnitt &amp; Styling Jungs bis 14 Jahre</span></label>
+                  <label class="service-option"><input type="checkbox" value="Waschen, Schnitt &amp; Styling Mädchen bis 14 Jahre" /> <span>Waschen, Schnitt &amp; Styling Mädchen bis 14 Jahre</span></label>
+                  <div class="service-group">Kosmetik</div>
+                  <label class="service-option"><input type="checkbox" value="Augenbrauen zupfen" /> <span>Augenbrauen zupfen</span></label>
+                  <label class="service-option"><input type="checkbox" value="Augenbrauen färben" /> <span>Augenbrauen färben</span></label>
+                  <label class="service-option"><input type="checkbox" value="Wimpern färben" /> <span>Wimpern färben</span></label>
+                  <label class="service-option"><input type="checkbox" value="Augenpaket (Augenbrauen färben, zupfen &amp; Wimpern färben)" /> <span>Augenpaket (Augenbrauen färben, zupfen &amp; Wimpern färben)</span></label>
+                  <div class="service-group">Hochzeit</div>
+                  <label class="service-option"><input type="checkbox" value="Beratungstermin" /> <span>Beratungstermin</span></label>
+                  <label class="service-option"><input type="checkbox" value="Hochsteckfrisur (pro Stunde)" /> <span>Hochsteckfrisur (pro Stunde)</span></label>
+                  <label class="service-option"><input type="checkbox" value="Make-up (pro Stunde)" /> <span>Make-up (pro Stunde)</span></label>
+                  <p class="service-empty" id="serviceEmpty">Keine passende Leistung gefunden.</p>
+                </div>
               </div>
             </div>
-            <p class="pills-error" id="leistungError" role="alert">Bitte wählen Sie eine Leistung aus.</p>
+            <input type="hidden" name="leistung" id="leistungSelected" />
+            <p class="service-error" id="leistungError" role="alert">Bitte wählen Sie eine Leistung aus.</p>
           </fieldset>
  
           <!-- Datum & Zeit -->
@@ -600,6 +721,14 @@
     const form         = document.getElementById('bookingForm');
     const successState = document.getElementById('successState');
     const datumInput   = document.getElementById('datum');
+    const serviceSelect = document.getElementById('serviceSelect');
+    const serviceTrigger = document.getElementById('serviceTrigger');
+    const serviceSummary = document.getElementById('serviceSummary');
+    const serviceSearch = document.getElementById('serviceSearch');
+    const serviceEmpty = document.getElementById('serviceEmpty');
+    const serviceInput = document.getElementById('leistungSelected');
+    const serviceOptions = [...document.querySelectorAll('.service-option')];
+    const serviceGroups = [...document.querySelectorAll('.service-group')];
  
     /* Mindestdatum = heute */
     const today = new Date();
@@ -609,12 +738,87 @@
     function setInvalid(id, invalid) {
       document.getElementById(id).classList.toggle('invalid', invalid);
     }
+
+    function getSelectedServices() {
+      return serviceOptions
+        .filter(option => option.querySelector('input').checked)
+        .map(option => option.querySelector('input').value);
+    }
+
+    function updateServiceSummary() {
+      const selected = getSelectedServices();
+      serviceInput.value = selected.join(', ');
+      document.getElementById('leistungError').classList.remove('show');
+      serviceSummary.replaceChildren();
+
+      if (!selected.length) {
+        const placeholder = document.createElement('span');
+        placeholder.className = 'service-placeholder';
+        placeholder.textContent = 'Leistungen suchen und auswählen';
+        serviceSummary.appendChild(placeholder);
+        return;
+      }
+
+      const visibleLabels = selected.slice(0, 3);
+      const moreCount = selected.length - visibleLabels.length;
+      visibleLabels.forEach(label => {
+        const chip = document.createElement('span');
+        chip.className = 'service-chip';
+        chip.textContent = label;
+        serviceSummary.appendChild(chip);
+      });
+
+      if (moreCount > 0) {
+        const chip = document.createElement('span');
+        chip.className = 'service-chip';
+        chip.textContent = `+${moreCount} weitere`;
+        serviceSummary.appendChild(chip);
+      }
+    }
+
+    function setServiceMenu(open) {
+      serviceSelect.classList.toggle('open', open);
+      serviceTrigger.setAttribute('aria-expanded', String(open));
+      if (open) {
+        requestAnimationFrame(() => serviceSearch.focus());
+      }
+    }
+
+    function updateGroupVisibility() {
+      serviceGroups.forEach(group => {
+        let hasVisibleOption = false;
+        let next = group.nextElementSibling;
+
+        while (next && !next.classList.contains('service-group')) {
+          if (next.classList.contains('service-option') && next.style.display !== 'none') {
+            hasVisibleOption = true;
+          }
+          next = next.nextElementSibling;
+        }
+
+        group.style.display = hasVisibleOption ? '' : 'none';
+      });
+    }
+
+    function filterServices() {
+      const query = serviceSearch.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      serviceOptions.forEach(option => {
+        const matches = option.textContent.toLowerCase().includes(query);
+        option.style.display = matches ? '' : 'none';
+        if (matches) visibleCount += 1;
+      });
+
+      updateGroupVisibility();
+      serviceEmpty.classList.toggle('show', visibleCount === 0);
+    }
  
     function validate() {
       let ok = true;
  
       /* Leistung */
-      const leistungOk = !!form.querySelector('input[name="leistung"]:checked');
+      const leistungOk = getSelectedServices().length > 0;
       document.getElementById('leistungError').classList.toggle('show', !leistungOk);
       if (!leistungOk) ok = false;
  
@@ -656,15 +860,30 @@
     form.querySelectorAll('.form-input, .form-select').forEach(el => {
       el.addEventListener('input', () => el.closest('.form-group')?.classList.remove('invalid'));
     });
-    form.querySelectorAll('input[name="leistung"]').forEach(el => {
-      el.addEventListener('change', () => document.getElementById('leistungError').classList.remove('show'));
+    serviceTrigger.addEventListener('click', () => setServiceMenu(!serviceSelect.classList.contains('open')));
+    serviceSearch.addEventListener('input', filterServices);
+    serviceOptions.forEach(option => {
+      option.querySelector('input').addEventListener('change', updateServiceSummary);
+    });
+
+    document.addEventListener('click', e => {
+      if (!serviceSelect.contains(e.target)) {
+        setServiceMenu(false);
+      }
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        setServiceMenu(false);
+        serviceTrigger.focus();
+      }
     });
  
     form.addEventListener('submit', e => {
       e.preventDefault();
       if (document.getElementById('website').value) return;
       if (!validate()) {
-        const first = form.querySelector('.invalid, .pills-error.show');
+        const first = form.querySelector('.invalid, .service-error.show');
         if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
