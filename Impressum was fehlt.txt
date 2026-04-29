@@ -1,0 +1,28 @@
+Impressum ist fast vollständig — du musst nur die Platzhalter ausfüllen:
+
+Was noch fehlt (Pflichtfelder):
+
+Vollständiger Name des Inhabers — bürgerlicher Name des Saloninhabers, nicht nur der Geschäftsname
+Straße und Hausnummer — vollständige Adresse
+Telefonnummer — Pflicht beim TMG, darf nicht fehlen
+
+
+Was du noch prüfen solltest:
+Rechtsform — falls der Salon als GbR, GmbH, oder UG eingetragen ist, muss das rein:
+
+GmbH → Handelsregisternummer + Amtsgericht + Geschäftsführer
+Einzelunternehmer → reicht so wie es ist
+
+Berufsrechtliche Regelungen — bei Friseuren normalerweise nicht nötig, aber falls der Inhaber Meister ist kann man es erwähnen.
+Umsatzsteuer-ID — falls vorhanden muss sie rein. Frag den Inhaber ob er eine hat.
+
+Praktisch gesehen:
+Frag den Salon nach:
+
+Vollständigem Namen des Inhabers
+Genauer Adresse
+Telefonnummer
+Ob GmbH/GbR oder Einzelunternehmer
+USt-ID falls vorhanden
+
+Dann einfach die Platzhalter ersetzen — das Impressum ist sonst rechtlich solide.
